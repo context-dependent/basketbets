@@ -12,7 +12,7 @@ tweet_bets <- function() {
 
   tweet <- make_tweet(bets)
 
-  rtweet::post_tweet(tweet)
+  rtweet::post_tweet(tweet, token = twitter_token)
 
 }
 
@@ -30,7 +30,7 @@ make_tweet <- function(bet_table) {
 
   live_bets <- bet_table %>%
 
-    filter(
+    dplyr::filter(
       bet_kelly_40 > 0
     )
 
@@ -120,7 +120,7 @@ scrape_538 <- function() {
     dplyr::tibble(
       time_stamp_538 = time_stamp,
       date_raw = games_sections %>% purrr::map(rvest::html_node, ".h3") %>% purrr::map_chr(rvest::html_text),
-      date = date_raw %>% stringr::str_remove("^.+, ") %>% stringr::str_c(" 2020") %>% lubridate::mdy(),
+      date = date_raw %>% stringr::str_remove("^.+, ") %>% stringr::str_c(" 2021") %>% lubridate::mdy(),
       team = games_sections %>% purrr::map(rvest::html_nodes, ".tr.team") %>% purrr::map(rvest::html_attr, "data-team"),
       win_chance = games_sections %>% purrr::map(rvest::html_nodes, ".td.number.chance") %>% purrr::map(rvest::html_text) %>% purrr::map(readr::parse_number) %>% purrr::map(~ .x / 100)
     ) %>%

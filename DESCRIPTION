@@ -20,4 +20,5 @@ Imports:
     scales,
     purrr,
     lubridate,
+    readr,
     httr
